@@ -9,13 +9,14 @@
 #' to be included in each test set
 #' @param opt_params a list of optional parameters characterizing both the model to be validated and the input dataset. 
 #' It may include parameters like the number of trees (ntree), the mtry, or the eventual reference class label (ref_level) of the dataset
+#' @importFrom WilcoxCV generate.split
 #' @return a list of three elements: \itemize{
 #' \item a n x p dataframe representing the predictions during the cross-validation process. Its number of lines is equal to the number of observations included in each test set
 #' and the number of columns is equal to the number of test sets (defined by the nsplits input parameter).
 #' \item a n x p dataframe representing the labels associated to the samples of each test set. Its number of lines n is equal to the number observations in each test set while p is the number of test sets defined by the nsplits input parameter 
 #' \item a list of p random forest models tested in the cross-validation process
 #'  }
-#'  @importFrom WilcoxCV generate.split
+#'  
 #'  @examples
 #'  data(cachexiaData)
 #'  params <- list(ntrees = 500, ref_level = levels(cachexiaData[,2])[1] )

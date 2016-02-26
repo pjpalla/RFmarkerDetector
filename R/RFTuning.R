@@ -275,7 +275,7 @@ tuneNTREE <- function(data, mtry, iterations, minNTREE = 500, pace = 100, seq_le
 #' ## res <- tuneMTRY(cachexiaData, iterations = 5, maxntree = 600, mtry_length = 10, graph = F)
 #' ## l <- optimizeMTRY(res$oob)
 #' ## plotOOBvsMTRY(l$mean_matrix, l$ci_matrix)
-#' @import ggplot2
+# @import ggplot2
 
 plotOOBvsMTRY <- function(mean_matrix, ci_matrix) {
     

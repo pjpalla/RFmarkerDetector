@@ -25,6 +25,7 @@ and the number of columns is equal to the number of test sets (defined by the ns
 \item a n x p dataframe representing the labels associated to the samples of each test set. Its number of lines n is equal to the number observations in each test set while p is the number of test sets defined by the nsplits input parameter 
 \item a list of p random forest models tested in the cross-validation process
  }
+ 
  @examples
  data(cachexiaData)
  params <- list(ntrees = 500, ref_level = levels(cachexiaData[,2])[1] )
