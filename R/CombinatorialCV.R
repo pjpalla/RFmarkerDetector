@@ -12,7 +12,7 @@
 #' \item ntree the number of trees of each Random Forest model
 #' \item nsplits the number of random splittings of the original dataset into training and test data sets
 #' \item test_prop the percentage (expressed as a real number) of the observations of the original dataset
-#' \item ref_level the assumed reference class label 
+#' \item kmax the maximum number of inputs to combine. 
 #' }
 #' @details The function computes all the k-combinations of the n input variables, with k ranging from 2 to n.
 #' Each combination corresponds to a dataset on which the function will grow a Random Forest model,
@@ -29,7 +29,7 @@
 #' @author Piergiorgio Palla 
 
 
-combinatorialRFMCCV <- function(dataset, parameters = list(ntrees = 500, nsplits = 100, test_prop = 1/3)) {
+combinatorialRFMCCV <- function(dataset, parameters = list(ntrees = 500, nsplits = 100, test_prop = 1/3, kmax = 5)) {
     
     START <- proc.time()
     
@@ -40,13 +40,20 @@ combinatorialRFMCCV <- function(dataset, parameters = list(ntrees = 500, nsplits
     ## These are the column indexes of original data - i.e. concentration matrix {3,4,...13}
     col_idx <- seq(start_idx, last_idx)
     
+    
     ### Test Params #### The label_order param states that 'cases' are 'positives' and 'ctrl' are negatives test_params <- list(ntree= 800, nsplits =
     ### 100, test_prop = 1/3, label_order=c('ctrl', 'case'))
     test_params <- parameters
     
     # combn(v,2)
     num_of_models = 1
-    
+
+    if (hasArg(parameters) && (!is.null(parameters$kmax)) && (kmax <= length(col_idx))){
+      kmax <- parameters$kmax
+    }else{
+      kmax = length(col_idx)
+    }
+
     ## Here we consider the j-combinations from the col_idx array Each combination represents a set of metabolites. We will consider the datasets
     ## extracted form the original dataset considering the column indexes correpsonding to these combinations.  On each of these datasets, we will
     ## generate a RF model.  We are trying to find the best combination of metabolites. The best set of candidate biomarkers will be the one with the
@@ -57,7 +64,8 @@ combinatorialRFMCCV <- function(dataset, parameters = list(ntrees = 500, nsplits
     auc_values = c()
     cat("\n\n ... Performing CV\n\n ")
     ### We are collecting the k-combinations from the inputa data index, with k ranging from 10 to 2
-    for (j in 2:(length(col_idx) - 1)) {
+    for (j in 2:(kmax - 1)) {
+        cat(paste(j, ' - combinations\n'))
         combinations <- combn(col_idx, j)  # a j x n_of_combinations matrix
         num_of_models = num_of_models + dim(combinations)[2]
         ### Here we try to find the best p
