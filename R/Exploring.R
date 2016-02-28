@@ -230,7 +230,8 @@ plot.pca.loadings <- function(pca_obj, nvar) {
 #' @param ncomp the number of components to plot
 #' @details screplot generates 2 graphs that represent respectively the relative variances
 #' and the cumulative variances associated with the principal components
-#' @export 
+#' @importFrom graphics barplot
+#' @export
 #' @examples
 #' ## data(cachexiaData)
 #' ## pca_obj <- pca(cachexiaData, autoscale = TRUE, exclude = TRUE)
