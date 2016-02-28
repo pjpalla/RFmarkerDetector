@@ -18,6 +18,7 @@
 #' Each combination corresponds to a dataset on which the function will grow a Random Forest model,
 #' performing a Monte Carlo CV. Then it will provide the best performing model in terms of the AUC of the ROC curve
 #' and the most relevant variables associated with it.
+#' @importFrom utils combn
 #' @return a list containing the most performing Random Forest model
 #' #' @examples
 #' ## data(cachexiaData) 
@@ -41,31 +42,32 @@ combinatorialRFMCCV <- function(dataset, parameters = list(ntrees = 500, nsplits
     col_idx <- seq(start_idx, last_idx)
     
     
-    ### Test Params #### The label_order param states that 'cases' are 'positives' and 'ctrl' are negatives test_params <- list(ntree= 800, nsplits =
-    ### 100, test_prop = 1/3, label_order=c('ctrl', 'case'))
+    ### Test Params #### The label_order param states that 'cases' are 'positives' and 'ctrl' are negatives test_params <-
+    ### list(ntree= 800, nsplits = 100, test_prop = 1/3, label_order=c('ctrl', 'case'))
     test_params <- parameters
     
     # combn(v,2)
     num_of_models = 1
-
-    if (hasArg(parameters) && (!is.null(parameters$kmax)) && (kmax <= length(col_idx))){
-      kmax <- parameters$kmax
-    }else{
-      kmax = length(col_idx)
+    
+    if (hasArg(parameters) && (!is.null(parameters$kmax)) && (kmax <= length(col_idx))) {
+        kmax <- parameters$kmax
+    } else {
+        kmax = length(col_idx)
     }
-
-    ## Here we consider the j-combinations from the col_idx array Each combination represents a set of metabolites. We will consider the datasets
-    ## extracted form the original dataset considering the column indexes correpsonding to these combinations.  On each of these datasets, we will
-    ## generate a RF model.  We are trying to find the best combination of metabolites. The best set of candidate biomarkers will be the one with the
-    ## RF model with the highest performance on the corresponding dataset.  To compare each model we will use the Area under the Roc Curve (AUC)
-    ## built considering the erformance of each RF model.
+    
+    ## Here we consider the j-combinations from the col_idx array Each combination represents a set of metabolites. We will
+    ## consider the datasets extracted form the original dataset considering the column indexes correpsonding to these
+    ## combinations.  On each of these datasets, we will generate a RF model.  We are trying to find the best combination of
+    ## metabolites. The best set of candidate biomarkers will be the one with the RF model with the highest performance on the
+    ## corresponding dataset.  To compare each model we will use the Area under the Roc Curve (AUC) built considering the
+    ## erformance of each RF model.
     top_models = list()
     top_metabolites = list()
     auc_values = c()
     cat("\n\n ... Performing CV\n\n ")
     ### We are collecting the k-combinations from the inputa data index, with k ranging from 10 to 2
     for (j in 2:(kmax - 1)) {
-        cat(paste(j, ' - combinations\n'))
+        cat(paste(j, " - combinations\n"))
         combinations <- combn(col_idx, j)  # a j x n_of_combinations matrix
         num_of_models = num_of_models + dim(combinations)[2]
         ### Here we try to find the best p
