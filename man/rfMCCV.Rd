@@ -30,10 +30,11 @@ and the number of columns is equal to the number of test sets (defined by the ns
  data(cachexiaData)
  params <- list(ntrees = 500, ref_level = levels(cachexiaData[,2])[1] )
  mccv_obj <- rfMCCV(cachexiaData, nsplits = 5, test_prop = 1/3, opt_params = params)
- @author Piergiorgio Palla
- @export
 }
 \description{
 This function allows to perform a Monte Carlo cross-validation of a Random Forest
+}
+\author{
+Piergiorgio Palla
 }
 

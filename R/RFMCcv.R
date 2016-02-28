@@ -10,6 +10,7 @@
 #' @param opt_params a list of optional parameters characterizing both the model to be validated and the input dataset. 
 #' It may include parameters like the number of trees (ntree), the mtry, or the eventual reference class label (ref_level) of the dataset
 #' @importFrom WilcoxCV generate.split
+#' @export
 #' @return a list of three elements: \itemize{
 #' \item a n x p dataframe representing the predictions during the cross-validation process. Its number of lines is equal to the number of observations included in each test set
 #' and the number of columns is equal to the number of test sets (defined by the nsplits input parameter).
@@ -21,8 +22,8 @@
 #'  data(cachexiaData)
 #'  params <- list(ntrees = 500, ref_level = levels(cachexiaData[,2])[1] )
 #'  mccv_obj <- rfMCCV(cachexiaData, nsplits = 5, test_prop = 1/3, opt_params = params)
-#'  @author Piergiorgio Palla
-#'  @export
+#' @author Piergiorgio Palla
+
 
 rfMCCV <- function(data, nsplits, test_prop, opt_params) {
     
@@ -196,11 +197,11 @@ forestPerformance <- function(cm) {
 #' 
 #' This function provides the average accuracy and the recall of a list of Random Forest models
 #' @param model_list a list of different Random Forest models
+#' @export
 #' @return a list of the two elements: \itemize{
 #' \item avg_accuracy the average accuracy
 #' \item avg_recall the average recall
 #' }
-#' @export
 #' @examples
 #' ## data(cachexiaData)
 #' ## params <- list(ntrees = 500, ref_level = levels(cachexiaData[,2])[1] )
@@ -218,9 +219,9 @@ rfMCCVPerf <- function(model_list) {
         
         if (!is.null(model_list[[i]]$test$confusion)) {
             # print(paste('model: ', i))
-            cm <- model_list[[i]]$test$confusion
-        } else {
-            cm <- model_list[[i]]$confusion
+          cm <- model_list[[i]]$test$confusion[,1:2]
+          }else{
+          cm <- model_list[[i]]$confusion[, 1:2]
         }
         
         tmp <- forestPerformance(cm)

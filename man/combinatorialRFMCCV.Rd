@@ -5,7 +5,7 @@
 \title{Combinatorial Monte Carlo CV}
 \usage{
 combinatorialRFMCCV(dataset, parameters = list(ntrees = 500, nsplits = 100,
-  test_prop = 1/3))
+  test_prop = 1/3, kmax = 5))
 }
 \arguments{
 \item{dataset}{a n x p dataframe used to build the models. The first two columns
@@ -15,7 +15,7 @@ must represent respectively the sample names and the class labels related to eac
 \item ntree the number of trees of each Random Forest model
 \item nsplits the number of random splittings of the original dataset into training and test data sets
 \item test_prop the percentage (expressed as a real number) of the observations of the original dataset
-\item ref_level the assumed reference class label 
+\item kmax the maximum number of inputs to combine. 
 }}
 }
 \value{
